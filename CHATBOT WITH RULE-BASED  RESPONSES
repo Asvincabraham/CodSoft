@@ -1,1 +1,74 @@
+from nltk.chat.util import Chat, reflections
+from nltk.chat.util import Chat, reflections
 
+
+def chatbot(input_text):
+    
+    input_text = input_text.lower()
+
+    
+    if "hello" in input_text:
+        return "Hello! How can I assist you today?"
+
+    elif "how are you" in input_text:
+        return "I'm just a computer program, but I'm here to help you!"
+
+    elif "bye" in input_text:
+        return "Goodbye! Have a great day!"
+
+    else:
+        return "I'm sorry, I don't understand that. Please ask me something else."
+
+
+pairs = [
+    [
+        r"Hi|Hello|Hey",
+        ["hi Sir, How are you "]
+    ],
+    [
+        r"How Are You",
+        ["Iam Fine , How are U sir"]
+    ],
+    [
+        r"fine",
+        ["how may i assist you"]
+    ],
+    [
+        r"I want to take an appointment",
+        ["Sure, please specify a date"]
+    ],
+    
+    
+
+    [
+        r"quit|bye",
+        ["Bye for now. See you soon :) ","It was nice talking to you. See you soon :)"]
+    ],
+    [
+        r"(.*)",
+        ['That is nice to hear']
+    ],
+]
+
+
+my_dummy_reflections = {
+    "go": "gone",
+    "hello": "hey there"
+}
+
+
+chat = Chat(pairs, my_dummy_reflections)
+
+
+print("Advanced Chatbot: Hello! How can I assist you today?")
+while True:
+    user_input = input("You: ")
+    
+    
+    response = chat.respond(user_input)
+    
+    print("Advanced Chatbot:", response)
+    
+   
+    if user_input.lower() == "quit":
+        break
