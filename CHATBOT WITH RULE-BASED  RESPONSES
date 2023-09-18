@@ -1,6 +1,4 @@
 from nltk.chat.util import Chat, reflections
-from nltk.chat.util import Chat, reflections
-
 
 def chatbot(input_text):
     
