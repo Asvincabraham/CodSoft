@@ -1,1 +1,119 @@
+import random
+
+
+board = [' ' for _ in range(9)]
+
+
+winning_combinations = [(0, 1, 2), (3, 4, 5), (6, 7, 8),
+                      (0, 3, 6), (1, 4, 7), (2, 5, 8),
+                      (0, 4, 8), (2, 4, 6)]
+
+
+def print_board(board):
+
+  print(f"{board[0]} | {board[1]} | {board[2]}")
+  print("---------")
+  print(f"{board[3]} | {board[4]} | {board[5]}")
+  print("---------")
+  print(f"{board[6]} | {board[7]} | {board[8]}")
+
+
+def evaluate(board):
+
+  for combo in winning_combinations:
+    if board[combo[0]] == board[combo[1]] == board[combo[2]] != ' ':
+      return board[combo[0]]
+
+  if ' ' not in board:
+    return 'Tie'
+
+  return None
+
+
+def minimax(board, depth, maximizing_player):
+
+  if depth == 0 or evaluate(board):
+    if evaluate(board) == 'X':
+      return 1
+    elif evaluate(board) == 'O':
+      return -1
+    else:
+      return 0
+
+  if maximizing_player:
+    max_eval = float('-inf')
+    for i in range(9):
+      if board[i] == ' ':
+        board[i] = 'X'
+        eval = minimax(board, depth - 1, False)
+        board[i] = ' '
+        max_eval = max(max_eval, eval)
+    return max_eval
+  else:
+    min_eval = float('inf')
+    for i in range(9):
+      if board[i] == ' ':
+        board[i] = 'O'
+        eval = minimax(board, depth - 1, True)
+        board[i] = ' '
+        min_eval = min(min_eval, eval)
+    return min_eval
+
+
+def best_move(board):
+  
+  best_score = float('-inf')
+  best_move = None
+
+  for i in range(9):
+    if board[i] == ' ':
+      board[i] = 'X'
+      score = minimax(board, 5, False)  # Depth set to 5 for faster computation
+      board[i] = ' '
+      if score > best_score:
+        best_score = score
+        best_move = i
+
+  return best_move
+
+
+def main():
+
+
+  print("Welcome to Tic-Tac-Toe!")
+  print_board(board)
+
+  while True:
+    player_move = int(input("Enter your move (1-9): ")) - 1
+
+    if board[player_move] == ' ':
+      board[player_move] = 'O'
+    else:
+      print("Invalid move. Try again.")
+      continue
+
+    print_board(board)
+
+    if evaluate(board) == 'O':
+      print("Congratulations! You win!")
+      break
+    elif evaluate(board) == 'Tie':
+      print("It's a tie!")
+      break
+
+    print("AI's turn:")
+    ai_move = best_move(board)
+    board[ai_move] = 'X'
+    print_board(board)
+
+    if evaluate(board) == 'X':
+      print("AI wins!")
+      break
+    elif evaluate(board) == 'Tie':
+      print("It's a tie!")
+      break
+
+
+if __name__ == "__main__":
+  main()
 
